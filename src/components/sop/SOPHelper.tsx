@@ -1,7 +1,8 @@
 "use client";
 
-import { useState, useCallback } from "react";
+import { useState, useCallback, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import { useSyncExternalStore } from "react";
 import {
   FileText,
   Save,
@@ -17,6 +18,27 @@ import {
   List,
 } from "lucide-react";
 import jsPDF from "jspdf";
+
+function useHydrated() {
+  return useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false
+  );
+}
+
+function loadSections(): SOPSection[] | null {
+  if (typeof window === "undefined") return null;
+  const saved = localStorage.getItem("sop-sections");
+  if (saved) {
+    try {
+      return JSON.parse(saved) as SOPSection[];
+    } catch {
+      return null;
+    }
+  }
+  return null;
+}
 
 const SOP_SECTIONS = [
   {
@@ -112,11 +134,30 @@ interface SOPSection {
 }
 
 export default function SOPHelper() {
-  const [sections, setSections] = useState<SOPSection[]>(
-    SOP_SECTIONS.map((s) => ({ id: s.id, content: "", wordCount: 0 }))
-  );
+  const hydrated = useHydrated();
+  const [sections, setSections] = useState<SOPSection[]>(() => {
+    if (!hydrated) {
+      return SOP_SECTIONS.map((s) => ({ id: s.id, content: "", wordCount: 0 }));
+    }
+    const saved = loadSections();
+    return saved ?? SOP_SECTIONS.map((s) => ({ id: s.id, content: "", wordCount: 0 }));
+  });
   const [activeSection, setActiveSection] = useState(0);
   const [showSaveMessage, setShowSaveMessage] = useState(false);
+
+  useEffect(() => {
+    const saveTimer = setTimeout(() => {
+      localStorage.setItem("sop-sections", JSON.stringify(sections));
+      setShowSaveMessage(true);
+    }, 1500);
+
+    const hideTimer = setTimeout(() => setShowSaveMessage(false), 3000);
+
+    return () => {
+      clearTimeout(saveTimer);
+      clearTimeout(hideTimer);
+    };
+  }, [sections]);
 
   const updateSectionContent = useCallback((content: string) => {
     const words = content.trim().split(/\s+/).filter((w) => w.length > 0);
