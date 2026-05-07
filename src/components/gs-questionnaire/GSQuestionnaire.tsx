@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useSyncExternalStore } from "react";
+import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import {
   FileText,
@@ -19,14 +19,6 @@ import jsPDF from "jspdf";
 import "jspdf-autotable";
 
 const MAX_CHARACTERS = 1000;
-
-function useHydrated() {
-  return useSyncExternalStore(
-    () => () => {},
-    () => true,
-    () => false
-  );
-}
 
 function getQuestions(): string[] {
   const au = countries.find((c) => c.code === "AU");
@@ -56,15 +48,19 @@ function loadAnswers(): GSAnswer[] | null {
 }
 
 export default function GSQuestionnaire() {
-  const hydrated = useHydrated();
   const questions = getQuestions();
   const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [answers, setAnswers] = useState<GSAnswer[]>(() => {
-    if (!hydrated) return initializeAnswers(questions);
-    const saved = loadAnswers();
-    return saved ?? initializeAnswers(questions);
-  });
+  const [answers, setAnswers] = useState<GSAnswer[]>(initializeAnswers(questions));
+  const [isLoaded, setIsLoaded] = useState(false);
   const [showSaveMessage, setShowSaveMessage] = useState(false);
+
+  useEffect(() => {
+    const saved = loadAnswers();
+    if (saved) {
+      setAnswers(saved);
+    }
+    setIsLoaded(true);
+  }, []);
 
   const updateAnswer = (value: string) => {
     setAnswers((prev) =>
@@ -77,6 +73,7 @@ export default function GSQuestionnaire() {
   };
 
   useEffect(() => {
+    if (!isLoaded) return;
     const saveTimer = setTimeout(() => {
       localStorage.setItem("gs-answers", JSON.stringify(answers));
       setShowSaveMessage(true);
@@ -88,7 +85,7 @@ export default function GSQuestionnaire() {
       clearTimeout(saveTimer);
       clearTimeout(hideTimer);
     };
-  }, [answers]);
+  }, [answers, isLoaded]);
 
   const getCounterColor = (count: number) => {
     if (count >= MAX_CHARACTERS) return "text-red-500";
