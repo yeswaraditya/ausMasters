@@ -35,7 +35,7 @@ export default function Navbar() {
             </span>
           </Link>
 
-          <nav style={{ display: "flex", flexDirection: "row", gap: "4px" }} className="hidden lg:flex">
+          <nav className="hidden md:flex flex-row items-center gap-1">
             {navLinks.map((link) => {
               const Icon = link.icon;
               const isActive = pathname === link.href;
@@ -48,19 +48,7 @@ export default function Navbar() {
                     href={link.href}
                     target="_blank"
                     rel="noopener noreferrer"
-                    style={{
-                      display: "flex",
-                      flexDirection: "row",
-                      alignItems: "center",
-                      gap: "8px",
-                      padding: "8px 16px",
-                      borderRadius: "8px",
-                      fontSize: "14px",
-                      fontWeight: "500",
-                      whiteSpace: "nowrap",
-                      color: "#4b5563",
-                      textDecoration: "none",
-                    }}
+                    className="flex flex-row items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium text-gray-600 hover:bg-gray-50 transition-colors"
                   >
                     <Icon className="w-4 h-4" style={{ width: 16, height: 16 }} />
                     {link.label}
@@ -72,20 +60,11 @@ export default function Navbar() {
                 <Link
                   key={link.href}
                   href={link.href}
-                  style={{
-                    display: "flex",
-                    flexDirection: "row",
-                    alignItems: "center",
-                    gap: "8px",
-                    padding: "8px 16px",
-                    borderRadius: "8px",
-                    fontSize: "14px",
-                    fontWeight: "500",
-                    whiteSpace: "nowrap",
-                    color: isActive ? "#1d4ed8" : "#4b5563",
-                    backgroundColor: isActive ? "#eff6ff" : "transparent",
-                    textDecoration: "none",
-                  }}
+                  className={`flex flex-row items-center gap-2 px-4 py-2 rounded-lg text-sm font-medium transition-colors ${
+                    isActive
+                      ? "bg-blue-50 text-blue-700"
+                      : "text-gray-600 hover:bg-gray-50"
+                  }`}
                 >
                   <Icon className="w-4 h-4" style={{ width: 16, height: 16 }} />
                   {link.label}
@@ -97,7 +76,7 @@ export default function Navbar() {
           <button
             type="button"
             onClick={() => setIsOpen(!isOpen)}
-            className="lg:hidden p-2 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors"
+            className="md:hidden p-2 rounded-lg text-gray-700 hover:bg-gray-100 transition-colors"
             aria-label="Toggle menu"
           >
             {isOpen ? <X className="w-5 h-5" /> : <Menu className="w-5 h-5" />}
@@ -112,7 +91,7 @@ export default function Navbar() {
             animate={{ opacity: 1, height: "auto" }}
             exit={{ opacity: 0, height: 0 }}
             transition={{ duration: 0.25, ease: "easeInOut" }}
-            className="lg:hidden bg-white border-t border-gray-100"
+            className="md:hidden bg-white border-t border-gray-100"
           >
             <div className="px-4 py-4 space-y-1">
               {navLinks.map((link) => {
