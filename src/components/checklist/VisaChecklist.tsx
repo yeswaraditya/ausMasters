@@ -14,7 +14,7 @@ import {
   Download,
 } from "lucide-react";
 import jsPDF from "jspdf";
-import "jspdf-autotable";
+import autoTable from "jspdf-autotable";
 
 const CHECKLIST_CATEGORIES = [
   {
@@ -72,11 +72,61 @@ const CHECKLIST_CATEGORIES = [
         label: "Education loan sanction letter",
         required: false,
       },
-      {
-        id: "financial-affidavit",
-        label: "Financial affidavit/support letter",
-        required: true,
-      },
+{
+    id: "financial-affidavit",
+    label: "Financial affidavit/support letter",
+    required: true,
+  },
+  {
+    id: "itr-returns",
+    label: "Previous 3 years ITRs (Income Tax Returns)",
+    required: true,
+  },
+  {
+    id: "itr-sources",
+    label: "Proof of sources of money (as per latest ITR activities)",
+    required: true,
+  },
+  {
+    id: "parent-pay-slips",
+    label: "Parent's pay slips (if employed)",
+    required: false,
+  },
+  {
+    id: "sponsor-affidavit",
+    label: "Sponsor affidavit",
+    required: true,
+  },
+  {
+    id: "self-affidavit",
+    label: "Self affidavit",
+    required: true,
+  },
+  {
+    id: "ca-report",
+    label: "CA report/financial certificate",
+    required: false,
+  },
+  {
+    id: "loan-statement",
+    label: "Loan account statement (verified & attested by bank)",
+    required: false,
+  },
+  {
+    id: "loan-sanction",
+    label: "Loan sanction letter",
+    required: false,
+  },
+  {
+    id: "loan-disbursement",
+    label: "Loan disbursement letter",
+    required: false,
+  },
+  {
+    id: "loan-verification",
+    label: "Loan verification document (by consultancy)",
+    required: false,
+  },
     ],
   },
   {
@@ -85,11 +135,16 @@ const CHECKLIST_CATEGORIES = [
     icon: Globe,
     color: "text-purple-500",
     items: [
-      {
-        id: "ielts-score",
-        label: "IELTS/PTE/TOEFL scorecard",
-        required: true,
-      },
+{
+    id: "ielts-score",
+    label: "IELTS/PTE/TOEFL scorecard",
+    required: true,
+  },
+  {
+    id: "english-verification",
+    label: "English score verification/credential report",
+    required: true,
+  },
       {
         id: "english-waiver",
         label: "English waiver letter (if applicable)",
@@ -103,7 +158,26 @@ const CHECKLIST_CATEGORIES = [
     icon: FileText,
     color: "text-amber-500",
     items: [
-      { id: "passport", label: "Valid passport (all pages)", required: true },
+      {
+    id: "passport",
+    label: "Valid passport (all pages)",
+    required: true,
+  },
+  {
+    id: "aadhar-card",
+    label: "Aadhaar card",
+    required: true,
+  },
+  {
+    id: "pan-card",
+    label: "PAN card",
+    required: true,
+  },
+  {
+    id: "eaadhaar",
+    label: "E-Aadhaar (digital copy)",
+    required: false,
+  },
       {
         id: "passport-photo",
         label: "Passport-size photographs",
@@ -116,7 +190,7 @@ const CHECKLIST_CATEGORIES = [
       },
       {
         id: "gs-questionnaire",
-        label: "Genuine Student questionnaire",
+        label: "Genuine Student (GS) Q&A",
         required: true,
       },
       { id: "sop", label: "Statement of Purpose (SOP)", required: true },
@@ -135,7 +209,7 @@ const CHECKLIST_CATEGORIES = [
     items: [
       {
         id: "oshc",
-        label: "Overseas Student Health Cover (OSHC)",
+        label: "OSHC statement and policy details",
         required: true,
       },
       {
@@ -254,8 +328,7 @@ export default function VisaChecklist() {
         ];
       });
 
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      (doc as any).autoTable({
+      autoTable(doc, {
         startY: yPosition,
         head: [["Status", "Document", "Type"]],
         body: rows,
@@ -268,8 +341,7 @@ export default function VisaChecklist() {
         },
       });
 
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      yPosition = ((doc as any).lastAutoTable?.finalY || yPosition) + 12;
+      yPosition = (doc as unknown as { lastAutoTable: { finalY: number } }).lastAutoTable?.finalY + 12 || yPosition + 12;
     });
 
     doc.save("visa-checklist.pdf");
@@ -297,14 +369,30 @@ export default function VisaChecklist() {
                 </p>
               </div>
             </div>
-            <button
-              onClick={exportToPDF}
-              className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-lg text-sm font-medium hover:shadow-lg transition-all"
-            >
-              <Download className="w-4 h-4" />
-              Export PDF
-            </button>
+            <div className="flex items-center gap-3">
+              <span className="px-3 py-1 bg-amber-100 text-amber-700 text-xs font-medium rounded-full">
+                Customized for your profile
+              </span>
+              <button
+                onClick={exportToPDF}
+                className="inline-flex items-center gap-2 px-4 py-2 bg-gradient-to-r from-blue-500 to-cyan-500 text-white rounded-lg text-sm font-medium hover:shadow-lg transition-all"
+              >
+                <Download className="w-4 h-4" />
+                Export PDF
+              </button>
+            </div>
           </div>
+        </motion.div>
+
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.05 }}
+          className="mb-6 p-4 bg-amber-50 border border-amber-200 rounded-xl"
+        >
+          <p className="text-sm text-amber-800">
+            <strong>Note:</strong> The visa application checklist is unique for every student profile. Below is a general checklist that majorly serves your purpose. Additional documents may be required based on your specific circumstances.
+          </p>
         </motion.div>
 
         <motion.div

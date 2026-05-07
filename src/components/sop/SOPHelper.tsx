@@ -21,59 +21,87 @@ import jsPDF from "jspdf";
 const SOP_SECTIONS = [
   {
     id: "introduction",
-    title: "Introduction",
-    description:
-      "Brief introduction about yourself and your academic background",
+    title: "INTRODUCTION",
+    description: "Brief introduction about yourself and your motivation for pursuing this course",
     suggestedWords: "150-200",
-    maxWords: 250,
   },
   {
-    id: "academic-background",
-    title: "Academic Background",
-    description:
-      "Your educational qualifications, achievements, and relevant coursework",
+    id: "educational-background",
+    title: "EDUCATIONAL BACKGROUND",
+    description: "Your educational qualifications, achievements, and relevant coursework",
     suggestedWords: "200-250",
-    maxWords: 300,
   },
   {
-    id: "course-choice",
-    title: "Why This Course?",
-    description:
-      "Reasons for choosing this specific course and how it aligns with your goals",
+    id: "motivation-masters",
+    title: "MOTIVATION FOR MASTERS IN THIS SPECIFIC COURSE",
+    description: "Why you have chosen to pursue this specific master's program",
     suggestedWords: "200-250",
-    maxWords: 300,
   },
   {
-    id: "university-choice",
-    title: "Why This University?",
-    description:
-      "Why you chose this particular university over others",
+    id: "financials",
+    title: "FINANCIALS",
+    description: "Details about your financial capability and funding sources for your studies",
     suggestedWords: "150-200",
-    maxWords: 250,
   },
   {
-    id: "why-australia",
-    title: "Why Australia?",
-    description:
-      "Reasons for choosing Australia as your study destination",
+    id: "reasons-abroad",
+    title: "REASONS FOR CHOOSING ABROAD EDUCATION THAN INDIA",
+    description: "Why you prefer to study abroad instead of continuing in India",
     suggestedWords: "150-200",
-    maxWords: 250,
   },
   {
-    id: "career-goals",
-    title: "Career Goals",
-    description:
-      "Your short-term and long-term career plans after completing the course",
+    id: "not-choose-country-1",
+    title: "REASONS FOR NOT CHOOSING COUNTRY-1",
+    description: "Why you did not choose other popular study destinations",
+    suggestedWords: "100-150",
+  },
+  {
+    id: "not-choose-country-2",
+    title: "REASONS FOR NOT CHOOSING COUNTRY-2",
+    description: "Why you did not choose another alternative country",
+    suggestedWords: "100-150",
+  },
+  {
+    id: "australia-destination",
+    title: "AUSTRALIA AS A STUDY DESTINATION",
+    description: "Why Australia is your preferred study destination",
+    suggestedWords: "150-200",
+  },
+  {
+    id: "specific-university",
+    title: "WHY THIS SPECIFIC UNIVERSITY",
+    description: "Why you chose this particular university for your studies",
+    suggestedWords: "150-200",
+  },
+  {
+    id: "not-other-universities",
+    title: "WHY NOT OTHER UNIVERSITIES",
+    description: "Why you did not choose other universities",
+    suggestedWords: "100-150",
+  },
+  {
+    id: "career-plan",
+    title: "CAREER PLAN",
+    description: "Your short-term and long-term career plans after completing the course",
     suggestedWords: "200-250",
-    maxWords: 300,
+  },
+  {
+    id: "return-home",
+    title: "INTENT TO RETURN TO HOME COUNTRY AFTER STUDIES",
+    description: "Your plans to return to your home country after completing studies",
+    suggestedWords: "150-200",
+  },
+  {
+    id: "visa-conditions",
+    title: "STUDENT VISA CONDITIONS",
+    description: "Any additional information about visa conditions (Optional)",
+    suggestedWords: "100-150",
   },
   {
     id: "conclusion",
-    title: "Conclusion",
-    description:
-      "Summarize your motivation and readiness for this opportunity",
+    title: "CONCLUSION",
+    description: "Summarize your motivation and readiness for this opportunity",
     suggestedWords: "100-150",
-    maxWords: 200,
   },
 ];
 
@@ -105,8 +133,6 @@ export default function SOPHelper() {
   const currentSection = SOP_SECTIONS[activeSection];
   const currentSectionData = sections[activeSection];
 
-  const isOverLimit =
-    currentSectionData.wordCount > currentSection.maxWords;
   const isWithinSuggested =
     currentSectionData.wordCount >=
       parseInt(currentSection.suggestedWords.split("-")[0]) &&
@@ -114,7 +140,6 @@ export default function SOPHelper() {
       parseInt(currentSection.suggestedWords.split("-")[1]);
 
   const getWordCounterColor = () => {
-    if (isOverLimit) return "text-red-500";
     if (isWithinSuggested) return "text-emerald-500";
     return "text-amber-500";
   };
@@ -162,23 +187,23 @@ export default function SOPHelper() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-20 pb-12">
+    <div className="min-h-screen bg-gray-50/50 pt-20 pb-12">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
-          initial={{ opacity: 0, y: 20 }}
+          initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
           className="mb-8"
         >
-          <div className="flex items-center justify-between">
-            <div className="flex items-center gap-3">
-              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center">
+          <div className="flex items-center justify-between flex-wrap gap-4">
+            <div className="flex items-center gap-4">
+              <div className="w-12 h-12 rounded-xl bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center shadow-lg shadow-violet-500/20">
                 <FileText className="w-6 h-6 text-white" />
               </div>
               <div>
-                <h1 className="text-2xl lg:text-3xl font-bold text-gray-900">
+                <h1 className="text-2xl lg:text-3xl font-bold text-gray-900 tracking-tight">
                   SOP Helper
                 </h1>
-                <p className="text-gray-600">
+                <p className="text-sm text-gray-500 mt-0.5">
                   Structure and write your Statement of Purpose
                 </p>
               </div>
@@ -186,7 +211,7 @@ export default function SOPHelper() {
             <div className="flex items-center gap-2">
               <button
                 onClick={copyToClipboard}
-                className="inline-flex items-center gap-2 px-4 py-2 bg-white border border-gray-200 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+                className="inline-flex items-center gap-2 px-4 py-2.5 bg-white border border-gray-200 rounded-xl text-sm font-medium text-gray-700 hover:bg-gray-50 hover:border-gray-300 transition-all card-hover"
               >
                 <Copy className="w-4 h-4" />
                 Copy All
@@ -264,8 +289,7 @@ export default function SOPHelper() {
                   {currentSection.description}
                 </p>
                 <p className="text-xs text-gray-500 mt-2">
-                  Suggested: {currentSection.suggestedWords} words (Max:{" "}
-                  {currentSection.maxWords})
+                  Suggested: {currentSection.suggestedWords} words
                 </p>
               </div>
 
@@ -301,13 +325,10 @@ export default function SOPHelper() {
                   <div
                     className={`flex items-center gap-2 text-sm ${getWordCounterColor()}`}
                   >
-                    {isOverLimit ? (
-                      <AlertCircle className="w-4 h-4" />
-                    ) : isWithinSuggested ? (
+                    {isWithinSuggested ? (
                       <CheckCircle className="w-4 h-4" />
                     ) : null}
-                    {currentSectionData.wordCount} /{" "}
-                    {currentSection.maxWords} words
+                    {currentSectionData.wordCount} words
                   </div>
                   <AnimatePresence>
                     {showSaveMessage && (
@@ -335,17 +356,27 @@ export default function SOPHelper() {
                 >
                   Previous Section
                 </button>
-                <button
-                  onClick={() =>
-                    setActiveSection((prev) =>
-                      Math.min(SOP_SECTIONS.length - 1, prev + 1)
-                    )
-                  }
-                  disabled={activeSection === SOP_SECTIONS.length - 1}
-                  className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
-                >
-                  Next Section
-                </button>
+                {activeSection === SOP_SECTIONS.length - 1 && currentSectionData.wordCount > 0 ? (
+                  <button
+                    onClick={exportToPDF}
+                    className="px-4 py-2 text-sm font-medium text-white bg-emerald-600 rounded-lg hover:bg-emerald-700 transition-colors flex items-center gap-2"
+                  >
+                    <Download className="w-4 h-4" />
+                    Download PDF
+                  </button>
+                ) : (
+                  <button
+                    onClick={() =>
+                      setActiveSection((prev) =>
+                        Math.min(SOP_SECTIONS.length - 1, prev + 1)
+                      )
+                    }
+                    disabled={activeSection === SOP_SECTIONS.length - 1}
+                    className="px-4 py-2 text-sm font-medium text-white bg-blue-600 rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                  >
+                    Next Section
+                  </button>
+                )}
               </div>
             </motion.div>
           </div>

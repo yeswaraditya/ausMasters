@@ -1,12 +1,7 @@
-import type { Metadata } from "next";
-import ChatInterface from "@/components/chat/ChatInterface";
+import { redirect } from "next/navigation";
 
-export const metadata: Metadata = {
-  title: "Visa Chat - ausMasters",
-  description:
-    "AI-powered visa profile assessment chat for Australian student visas.",
-};
+export const dynamic = "force-dynamic";
 
 export default function ChatPage() {
-  return <ChatInterface />;
+  redirect("/");
 }

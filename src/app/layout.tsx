@@ -12,9 +12,9 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "ausMasters - AI-Powered Australian Student Visa Guidance",
+  title: "ausMasters - Australian Student Visa Guidance",
   description:
-    "AI-powered visa guidance, genuine student questionnaire, and expert insights to help you succeed in studying in Australia. Get personalized feedback in minutes.",
+    "Tools and guidance to help you prepare, apply, and succeed in your Australian student visa journey.",
   icons: {
     icon: "/favicon.ico",
   },
@@ -26,14 +26,20 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} h-full antialiased`} suppressHydrationWarning>
+    <html lang="en" className={`${inter.variable} h-full antialiased`}>
       <body className="min-h-full flex flex-col font-sans">
+<<<<<<< Updated upstream
         <AuthProvider>
           <Navbar />
           <main className="flex-1">{children}</main>
           <Footer />
         </AuthProvider>
         <Analytics />
+=======
+        <Navbar />
+        <main className="flex-1">{children}</main>
+        <Footer />
+>>>>>>> Stashed changes
       </body>
     </html>
   );

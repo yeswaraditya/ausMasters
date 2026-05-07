@@ -1,375 +1,202 @@
 "use client";
 
-import { motion, useScroll, useTransform } from "framer-motion";
-import { useRef } from "react";
+import { useSyncExternalStore } from "react";
 import Link from "next/link";
-import {
-  ArrowRight,
-  MessageSquare,
-  FileText,
-  Clock,
-  Shield,
-  GraduationCap,
-  Users,
-  CheckCircle,
-} from "lucide-react";
+import { ArrowRight, FileText, PenTool, CheckSquare, GraduationCap } from "lucide-react";
 
-const fadeInUp = {
-  initial: { opacity: 0, y: 40 },
-  animate: { opacity: 1, y: 0 },
-  transition: { duration: 0.6, ease: "easeOut" },
-};
+function useHydrated() {
+  return useSyncExternalStore(
+    () => () => {},
+    () => true,
+    () => false
+  );
+}
 
-const staggerContainer = {
-  animate: {
-    transition: {
-      staggerChildren: 0.15,
-    },
-  },
-};
-
-const features = [
-  {
-    icon: MessageSquare,
-    title: "AI Visa Chat",
-    description:
-      "Our intelligent chatbot analyzes hundreds of visa profiles to give you personalized feedback on processing times, risks, and recommendations.",
-    color: "bg-blue-500",
-  },
+const tools = [
   {
     icon: FileText,
     title: "GS Questionnaire",
-    description:
-      "Complete your Genuine Student questionnaire with our guided form. Built-in character counter ensures you stay within the 1000-character limit per answer.",
-    color: "bg-cyan-500",
+    description: "Complete your Genuine Student questionnaire with guided prompts and character limits built in.",
+    href: "/gs-questionnaire",
+    gradient: "from-blue-500 to-blue-600",
   },
   {
-    icon: Clock,
-    title: "Processing Insights",
-    description:
-      "Get real estimates on visa processing times based on your profile and historical data from thousands of successful applications.",
-    color: "bg-indigo-500",
+    icon: PenTool,
+    title: "SOP Helper",
+    description: "Write a compelling Statement of Purpose with structured sections and word count tracking.",
+    href: "/sop-helper",
+    gradient: "from-violet-500 to-purple-600",
   },
   {
-    icon: Shield,
-    title: "Risk Assessment",
-    description:
-      "Identify potential red flags in your profile before submission. Get actionable advice to strengthen your visa application.",
-    color: "bg-emerald-500",
+    icon: CheckSquare,
+    title: "Visa Checklist",
+    description: "Track every document you need for your student visa application in one place.",
+    href: "/checklist",
+    gradient: "from-emerald-500 to-teal-600",
   },
-];
-
-const steps = [
-  {
-    number: "01",
-    title: "Start a Chat",
-    description: "Answer guided questions about your study plans and profile.",
-  },
-  {
-    number: "02",
-    title: "Profile Analysis",
-    description:
-      "Our AI matches your profile against hundreds of visa outcomes.",
-  },
-  {
-    number: "03",
-    title: "Get Feedback",
-    description:
-      "Receive personalized insights on processing time and risk factors.",
-  },
-  {
-    number: "04",
-    title: "Prepare Documents",
-    description:
-      "Complete GS questionnaire and prepare a strong application.",
-  },
-];
-
-const stats = [
-  { value: "500+", label: "Visa Profiles Analyzed" },
-  { value: "95%", label: "Success Rate" },
-  { value: "4 weeks", label: "Avg. Processing Time" },
-  { value: "1000+", label: "Students Helped" },
 ];
 
 export default function Home() {
-  const heroRef = useRef<HTMLDivElement>(null);
-  const { scrollYProgress } = useScroll({
-    target: heroRef,
-    offset: ["start start", "end start"],
-  });
+  const hydrated = useHydrated();
 
-  const heroY = useTransform(scrollYProgress, [0, 1], [0, 200]);
-  const heroOpacity = useTransform(scrollYProgress, [0, 1], [1, 0]);
+  if (!hydrated) {
+    return (
+      <div className="overflow-hidden">
+        <section className="relative min-h-[95vh] hero-gradient overflow-hidden">
+          <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-white via-white/90 to-transparent pointer-events-none" />
+        </section>
+        <section className="py-20 lg:py-28 bg-white">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="text-center mb-16">
+              <span className="text-xs font-semibold uppercase tracking-widest text-blue-600 mb-3 block">
+                Free Tools
+              </span>
+              <h2 className="text-3xl lg:text-5xl font-bold text-gray-900 mb-4 tracking-tight">
+                Everything you need to{" "}
+                <span className="gradient-text">apply successfully</span>
+              </h2>
+            </div>
+            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+              {tools.map((tool) => {
+                const Icon = tool.icon;
+                return (
+                  <div key={tool.title} className="bg-white rounded-2xl border border-gray-200 p-8 relative overflow-hidden">
+                    <div className={`absolute top-0 right-0 w-24 h-24 bg-gradient-to-br ${tool.gradient} opacity-5 rounded-bl-3xl`} />
+                    <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${tool.gradient} flex items-center justify-center mb-5 shadow-lg`}>
+                      <Icon className="w-6 h-6 text-white" />
+                    </div>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">{tool.title}</h3>
+                    <p className="text-gray-500 text-sm leading-relaxed mb-4">{tool.description}</p>
+                  </div>
+                );
+              })}
+            </div>
+          </div>
+        </section>
+      </div>
+    );
+  }
 
   return (
     <div className="overflow-hidden">
-      <section ref={heroRef} className="relative min-h-screen hero-gradient">
-        <motion.div
-          style={{ y: heroY, opacity: heroOpacity }}
-          className="absolute inset-0 flex items-center justify-center"
-        >
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-            <motion.div
-              initial="initial"
-              animate="animate"
-              variants={staggerContainer}
+      <section className="relative min-h-[95vh] hero-gradient overflow-hidden">
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_top_right,rgba(37,99,235,0.15),transparent_50%)]" />
+        <div className="absolute inset-0 bg-[radial-gradient(ellipse_at_bottom_left,rgba(6,182,212,0.1),transparent_50%)]" />
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48ZyBmaWxsPSJub25lIiBmaWxsLXJ1bGU9ImV2ZW5vZGQiPjxnIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMC4wMiI+PGNpcmNsZSBjeD0iMzAiIGN5PSIzMCIgcj0iMS41Ii8+PC9nPjwvZz48L3N2Zz4=')] opacity-50" />
+
+        <div className="relative flex items-center justify-center min-h-[95vh] px-4">
+          <div className="max-w-4xl mx-auto text-center animate-fade-in-up">
+            <span className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/10 text-white/90 text-sm backdrop-blur-sm border border-white/10 mb-8">
+              <GraduationCap className="w-4 h-4 text-blue-300" />
+              Built by a student, for students
+            </span>
+
+            <h1 
+              style={{ fontFamily: '"Awesome Serif", Georgia, serif', letterSpacing: "0.05em", fontSize: "clamp(1.8rem, 5vw, 5rem)" }} 
+              className="font-bold text-white mb-8 leading-[1] tracking-tight"
             >
-              <motion.div variants={fadeInUp} className="mb-6">
-                <span className="inline-flex items-center gap-2 px-4 py-2 rounded-full bg-white/10 text-white text-sm backdrop-blur-sm border border-white/20">
-                  <GraduationCap className="w-4 h-4" />
-                  Study in Australia Made Simple
-                </span>
-              </motion.div>
+              Your Australian{" "}
+              <span className="gradient-text-blue">Student Visa</span>
+              <br />
+              Guidance Platform
+            </h1>
 
-              <motion.h1
-                variants={fadeInUp}
-                className="text-4xl sm:text-5xl md:text-6xl lg:text-7xl font-bold text-white mb-6 leading-tight"
-              >
-                Your Journey to{" "}
-                <span className="block text-cyan-300">Studying in</span>
-                <span className="block">Australia Starts Here</span>
-              </motion.h1>
-
-              <motion.p
-                variants={fadeInUp}
-                className="text-lg sm:text-xl text-white/80 max-w-2xl mx-auto mb-10"
-              >
-                AI-powered visa guidance, genuine student questionnaire, and
-                expert insights to help you succeed. Get personalized feedback
-                in minutes.
-              </motion.p>
-
-              <motion.div
-                variants={fadeInUp}
-                className="flex flex-col sm:flex-row gap-4 justify-center"
-              >
-                <Link
-                  href="/chat"
-                  className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white text-blue-600 font-semibold rounded-xl hover:bg-white/90 transition-all shadow-lg shadow-white/20 group"
-                >
-                  Start Visa Chat
-                  <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-                </Link>
-                <Link
-                  href="/gs-questionnaire"
-                  className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white/10 text-white font-semibold rounded-xl hover:bg-white/20 transition-all backdrop-blur-sm border border-white/20"
-                >
-                  GS Questionnaire
-                  <FileText className="w-5 h-5" />
-                </Link>
-              </motion.div>
-            </motion.div>
-          </div>
-        </motion.div>
-
-        <div className="absolute bottom-0 left-0 right-0 h-32 bg-gradient-to-t from-white to-transparent" />
-      </section>
-
-      <section className="py-16 lg:py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-8">
-            {stats.map((stat, index) => (
-              <motion.div
-                key={stat.label}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1, duration: 0.5 }}
-                className="text-center"
-              >
-                <p className="text-3xl lg:text-4xl font-bold gradient-text mb-2">
-                  {stat.value}
-                </p>
-                <p className="text-gray-600 text-sm">{stat.label}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="py-16 lg:py-24 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
-              Everything You Need to{" "}
-              <span className="gradient-text">Apply Successfully</span>
-            </h2>
-            <p className="text-gray-600 max-w-2xl mx-auto text-lg">
-              From initial assessment to visa submission, our tools guide you
-              through every step of the process.
+            <p className="text-lg sm:text-xl text-white/80 max-w-2xl mx-auto mb-8 leading-relaxed">
+              When I was planning my journey to Australia, I struggled to find clear visa guidance.
+              So I built this platform — completely free — to help students navigate the process with confidence.
             </p>
-          </motion.div>
 
-          <motion.div
-            initial="initial"
-            whileInView="animate"
-            viewport={{ once: true }}
-            variants={staggerContainer}
-            className="grid md:grid-cols-2 gap-6 lg:gap-8"
-          >
-            {features.map((feature) => {
-              const Icon = feature.icon;
-              return (
-                <motion.div
-                  key={feature.title}
-                  variants={fadeInUp}
-                  whileHover={{ y: -4, transition: { duration: 0.2 } }}
-                  className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100 hover:shadow-lg transition-all group"
-                >
-                  <div
-                    className={`w-14 h-14 ${feature.color} rounded-xl flex items-center justify-center mb-6 group-hover:scale-110 transition-transform`}
-                  >
-                    <Icon className="w-7 h-7 text-white" />
-                  </div>
-                  <h3 className="text-xl font-semibold text-gray-900 mb-3">
-                    {feature.title}
-                  </h3>
-                  <p className="text-gray-600 leading-relaxed">
-                    {feature.description}
-                  </p>
-                </motion.div>
-              );
-            })}
-          </motion.div>
-        </div>
-      </section>
-
-      <section className="py-16 lg:py-24 bg-white">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
-              How It <span className="gradient-text">Works</span>
-            </h2>
-            <p className="text-gray-600 max-w-2xl mx-auto text-lg">
-              Four simple steps to get your visa profile assessed and
-              application ready.
-            </p>
-          </motion.div>
-
-          <div className="grid md:grid-cols-4 gap-8">
-            {steps.map((step, index) => (
-              <motion.div
-                key={step.number}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.15 }}
-                className="relative"
-              >
-                {index < steps.length - 1 && (
-                  <div className="hidden md:block absolute top-8 left-full w-full h-0.5 bg-gradient-to-r from-blue-200 to-cyan-200 -translate-x-8" />
-                )}
-                <div className="text-center">
-                  <div className="w-16 h-16 mx-auto mb-6 rounded-full bg-gradient-to-br from-blue-500 to-cyan-500 flex items-center justify-center">
-                    <span className="text-white font-bold text-lg">
-                      {step.number}
-                    </span>
-                  </div>
-                  <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                    {step.title}
-                  </h3>
-                  <p className="text-gray-600 text-sm">{step.description}</p>
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="py-16 lg:py-24 bg-gray-50">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-16"
-          >
-            <h2 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-4">
-              Why Choose <span className="gradient-text">ausMasters</span>
-            </h2>
-          </motion.div>
-
-          <div className="grid md:grid-cols-3 gap-8">
-            {[
-              {
-                icon: Users,
-                title: "Data-Driven Insights",
-                description:
-                  "Our recommendations are based on analysis of hundreds of real visa profiles and outcomes.",
-              },
-              {
-                icon: Shield,
-                title: "Expert Guidance",
-                description:
-                  "Built with insights from migration agents and education consultants who know the process inside out.",
-              },
-              {
-                icon: Clock,
-                title: "Save Time",
-                description:
-                  "Get instant feedback on your profile instead of waiting weeks for a consultation.",
-              },
-            ].map((item, index) => (
-              <motion.div
-                key={item.title}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ delay: index * 0.1 }}
-                className="bg-white rounded-2xl p-8 shadow-sm border border-gray-100"
-              >
-                <CheckCircle className="w-8 h-8 text-emerald-500 mb-4" />
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">
-                  {item.title}
-                </h3>
-                <p className="text-gray-600">{item.description}</p>
-              </motion.div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      <section className="py-16 lg:py-24 hero-gradient">
-        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            <h2 className="text-3xl lg:text-4xl font-bold text-white mb-6">
-              Ready to Start Your Journey?
-            </h2>
-            <p className="text-white/80 text-lg mb-8 max-w-2xl mx-auto">
-              Join thousands of students who have successfully navigated their
-              Australian student visa journey with ausMasters.
-            </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <Link
-                href="/chat"
-                className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white text-blue-600 font-semibold rounded-xl hover:bg-white/90 transition-all group"
+                href="/gs-questionnaire"
+                style={{ fontFamily: '"Awesome Serif", Georgia, serif' }}
+                className="inline-flex items-center justify-center gap-3 px-10 py-4 bg-gradient-to-r from-blue-600 to-blue-500 text-white font-semibold rounded-full hover:from-blue-700 hover:to-blue-600 transition-all shadow-2xl shadow-blue-600/40 group"
               >
-                Start Visa Chat
+                Get Started
                 <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
               </Link>
               <Link
-                href="/gs-questionnaire"
-                className="inline-flex items-center justify-center gap-2 px-8 py-4 bg-white/10 text-white font-semibold rounded-xl hover:bg-white/20 transition-all backdrop-blur-sm border border-white/20"
+                href="/checklist"
+                style={{ fontFamily: '"Awesome Serif", Georgia, serif' }}
+                className="inline-flex items-center justify-center gap-3 px-10 py-4 bg-white/20 text-white font-semibold rounded-full hover:bg-white/30 transition-all backdrop-blur-md border border-white/30"
               >
-                Complete GS Form
+                View Checklist
+                <ArrowRight className="w-5 h-5" />
               </Link>
             </div>
-          </motion.div>
+
+            <div className="flex items-center justify-center gap-4 mt-8 relative z-10">
+              <span className="text-white/70 text-sm">Follow my journey:</span>
+              <a
+                href="https://www.linkedin.com/in/yarlagaddaeswaraditya/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors cursor-pointer"
+              >
+                <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433c-1.144 0-2.063-.926-2.063-2.065 0-1.138.92-2.063 2.063-2.063 1.14 0 2.064.925 2.064 2.063 0 1.139-.925 2.065-2.064 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+                </svg>
+              </a>
+              <a
+                href="https://www.instagram.com/eswaraditya5/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="p-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors"
+              >
+                <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
+                  <path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" />
+                </svg>
+              </a>
+            </div>
+          </div>
+        </div>
+
+        <div className="absolute bottom-0 left-0 right-0 h-20 bg-gradient-to-t from-white via-white/90 to-transparent pointer-events-none" />
+      </section>
+
+      <section className="py-20 lg:py-28 bg-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+          <div className="text-center mb-16 animate-fade-in-up" style={{ animationDelay: "0.1s" }}>
+            <span className="text-xs font-semibold uppercase tracking-widest text-blue-600 mb-3 block">
+              Free Tools
+            </span>
+            <h2 className="text-3xl lg:text-5xl font-bold text-gray-900 mb-4 tracking-tight">
+              Everything you need to{" "}
+              <span className="gradient-text">apply successfully</span>
+            </h2>
+            <p className="text-gray-500 max-w-xl mx-auto text-lg leading-relaxed">
+              Three powerful tools to prepare your Australian student visa application.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {tools.map((tool, i) => {
+              const Icon = tool.icon;
+              return (
+                <div
+                  key={tool.title}
+                  className="animate-fade-in-up"
+                  style={{ animationDelay: `${0.2 + i * 0.1}s` }}
+                >
+                  <Link
+                    href={tool.href}
+                    className="card-hover group block bg-white rounded-2xl border border-gray-200 p-8 relative overflow-hidden"
+                  >
+                    <div className={`absolute top-0 right-0 w-24 h-24 bg-gradient-to-br ${tool.gradient} opacity-5 rounded-bl-3xl group-hover:opacity-10 transition-opacity`} />
+                    <div className={`w-12 h-12 rounded-xl bg-gradient-to-br ${tool.gradient} flex items-center justify-center mb-5 shadow-lg group-hover:scale-110 transition-transform`}>
+                      <Icon className="w-6 h-6 text-white" />
+                    </div>
+                    <h3 className="text-lg font-semibold text-gray-900 mb-2">{tool.title}</h3>
+                    <p className="text-gray-500 text-sm leading-relaxed mb-4">{tool.description}</p>
+                    <span className="inline-flex items-center gap-1.5 text-sm font-medium text-blue-600 group-hover:text-blue-700 transition-colors">
+                      Open tool
+                      <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" />
+                    </span>
+                  </Link>
+                </div>
+              );
+            })}
+          </div>
         </div>
       </section>
     </div>

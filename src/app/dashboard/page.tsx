@@ -1,11 +1,7 @@
-import type { Metadata } from "next";
-import DashboardClient from "@/components/dashboard/DashboardClient";
+import { redirect } from "next/navigation";
 
-export const metadata: Metadata = {
-  title: "Dashboard - ausMasters",
-  description: "Your personal dashboard for visa applications and progress.",
-};
+export const dynamic = "force-dynamic";
 
 export default function DashboardPage() {
-  return <DashboardClient />;
+  redirect("/");
 }
