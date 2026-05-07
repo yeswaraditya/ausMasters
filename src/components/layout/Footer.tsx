@@ -24,6 +24,14 @@ export default function Footer() {
             <Link href="/checklist" className="text-gray-600 hover:text-blue-600 text-sm transition-colors">
               Checklist
             </Link>
+            <a
+              href="https://forms.gle/trzo4toSxzsddirr9"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gray-600 hover:text-blue-600 text-sm transition-colors"
+            >
+              Feature Requests & Feedback
+            </a>
           </div>
 
           <div className="flex items-center gap-3 relative z-10">

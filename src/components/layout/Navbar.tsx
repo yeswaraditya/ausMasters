@@ -4,13 +4,15 @@ import { useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Menu, X, FileText, PenTool, CheckSquare, GraduationCap } from "lucide-react";
+import { Menu, X, FileText, PenTool, CheckSquare, GraduationCap, Users, MessageSquare } from "lucide-react";
 
 const navLinks = [
   { href: "/gs-questionnaire", label: "GS Form", icon: FileText },
   { href: "/sop-helper", label: "SOP Helper", icon: PenTool },
   { href: "/checklist", label: "Checklist", icon: CheckSquare },
   { href: "/university-priorities", label: "Priorities", icon: GraduationCap },
+  { href: "/communities", label: "Communities", icon: Users },
+  { href: "https://forms.gle/trzo4toSxzsddirr9", label: "Feedback", icon: MessageSquare, external: true },
 ];
 
 export default function Navbar() {
@@ -37,6 +39,35 @@ export default function Navbar() {
             {navLinks.map((link) => {
               const Icon = link.icon;
               const isActive = pathname === link.href;
+              const isExternal = link.external || link.href.startsWith("http");
+              
+              if (isExternal) {
+                return (
+                  <a
+                    key={link.href}
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    style={{
+                      display: "flex",
+                      flexDirection: "row",
+                      alignItems: "center",
+                      gap: "8px",
+                      padding: "8px 16px",
+                      borderRadius: "8px",
+                      fontSize: "14px",
+                      fontWeight: "500",
+                      whiteSpace: "nowrap",
+                      color: "#4b5563",
+                      textDecoration: "none",
+                    }}
+                  >
+                    <Icon className="w-4 h-4" style={{ width: 16, height: 16 }} />
+                    {link.label}
+                  </a>
+                );
+              }
+              
               return (
                 <Link
                   key={link.href}
@@ -87,6 +118,24 @@ export default function Navbar() {
               {navLinks.map((link) => {
                 const Icon = link.icon;
                 const isActive = pathname === link.href;
+                const isExternal = link.external || link.href.startsWith("http");
+                
+                if (isExternal) {
+                  return (
+                    <a
+                      key={link.href}
+                      href={link.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      onClick={handleLinkClick}
+                      className="flex items-center gap-3 px-4 py-3 rounded-lg text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors"
+                    >
+                      <Icon className="w-5 h-5" />
+                      {link.label}
+                    </a>
+                  );
+                }
+                
                 return (
                   <Link
                     key={link.href}

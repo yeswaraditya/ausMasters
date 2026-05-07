@@ -127,6 +127,7 @@ export default function Home() {
 
             <div className="flex items-center justify-center gap-4 mt-8 relative z-10">
               <span className="text-white/70 text-sm">Follow my journey:</span>
+              <span className="text-white font-medium text-sm">Eswar Aditya Yarlagadda</span>
               <a
                 href="https://www.linkedin.com/in/yarlagaddaeswaraditya/"
                 target="_blank"
