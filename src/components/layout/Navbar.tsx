@@ -35,7 +35,7 @@ export default function Navbar() {
             </span>
           </Link>
 
-          <nav style={{ display: "flex", flexDirection: "row", gap: "4px" }}>
+          <nav style={{ display: "flex", flexDirection: "row", gap: "4px" }} className="hidden lg:flex">
             {navLinks.map((link) => {
               const Icon = link.icon;
               const isActive = pathname === link.href;
