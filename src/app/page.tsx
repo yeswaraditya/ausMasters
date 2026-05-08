@@ -2,7 +2,7 @@
 
 import { useSyncExternalStore } from "react";
 import Link from "next/link";
-import { ArrowRight, FileText, PenTool, CheckSquare, GraduationCap } from "lucide-react";
+import { ArrowRight, FileText, PenTool, CheckSquare, GraduationCap, TrendingUp, Globe, MessageSquare, Users, Plane, Calculator } from "lucide-react";
 
 function useHydrated() {
   return useSyncExternalStore(
@@ -34,6 +34,48 @@ const tools = [
     href: "/checklist",
     gradient: "from-emerald-500 to-teal-600",
   },
+  {
+    icon: Plane,
+    title: "Pre-Departure Checklist",
+    description: "Prepare for your departure with a comprehensive checklist of everything you need.",
+    href: "/pre-departure-checklist",
+    gradient: "from-indigo-500 to-purple-600",
+  },
+  {
+    icon: TrendingUp,
+    title: "University Priorities",
+    description: "View latest university priorities and allocation status for Australian student visas.",
+    href: "/university-priorities",
+    gradient: "from-orange-500 to-red-600",
+  },
+  {
+    icon: Globe,
+    title: "Country Comparison",
+    description: "Compare study destinations: Australia, USA, Germany side by side.",
+    href: "/country-compare",
+    gradient: "from-cyan-500 to-blue-500",
+  },
+  {
+    icon: Calculator,
+    title: "Living Cost Calculator",
+    description: "Estimate monthly expenses across 8 Australian cities with currency conversion and lifestyle scoring.",
+    href: "/living-cost",
+    gradient: "from-blue-600 to-cyan-500",
+  },
+  {
+    icon: MessageSquare,
+    title: "Feedback & Ideas",
+    description: "Share feature requests, feedback, and ideas to improve ausMasters.",
+    href: "/feedback",
+    gradient: "from-pink-500 to-rose-600",
+  },
+  {
+    icon: Users,
+    title: "Communities",
+    description: "Join WhatsApp groups to connect with other students and share experiences.",
+    href: "/communities",
+    gradient: "from-amber-500 to-orange-600",
+  },
 ];
 
 export default function Home() {
@@ -56,7 +98,7 @@ export default function Home() {
                 <span className="gradient-text">apply successfully</span>
               </h2>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
               {tools.map((tool) => {
                 const Icon = tool.icon;
                 return (
@@ -166,11 +208,11 @@ export default function Home() {
               <span className="gradient-text">apply successfully</span>
             </h2>
             <p className="text-gray-500 max-w-xl mx-auto text-lg leading-relaxed">
-              Three powerful tools to prepare your Australian student visa application.
+              Comprehensive tools to prepare your Australian student visa application and connect with the community.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             {tools.map((tool, i) => {
               const Icon = tool.icon;
               return (
