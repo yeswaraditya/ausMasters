@@ -175,7 +175,7 @@ export default function UniversityPriorities() {
   const currentData = activeTab === "universities" ? filteredUniversities : activeTab === "tafe" ? filteredTAFE : filteredOther;
 
   return (
-    <div className="min-h-screen bg-gray-50/50 pt-20 pb-12">
+    <div className="min-h-screen bg-gray-50/50 pt-32 pb-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 16 }}
@@ -314,7 +314,7 @@ export default function UniversityPriorities() {
             </table>
             {currentData.length === 0 && (
               <div className="p-8 text-center text-gray-500">
-                No providers found matching "{searchQuery}"
+                No providers found matching &ldquo;{searchQuery}&rdquo;
               </div>
             )}
           </div>

@@ -7,7 +7,6 @@ import {
   CheckCircle,
   ArrowRight,
   FileText,
-  Download,
   Shield,
   TrendingUp,
 } from "lucide-react";

@@ -190,7 +190,7 @@ Would you like to:
     (STAGES.indexOf(currentStage) / (STAGES.length - 1)) * 100;
 
   return (
-    <div className="min-h-screen bg-gray-50 pt-20 pb-8">
+    <div className="min-h-screen bg-gray-50 pt-32 pb-8">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 h-[calc(100vh-8rem)] flex flex-col">
         <div className="bg-white rounded-2xl shadow-lg border border-gray-100 flex flex-col h-full overflow-hidden">
           <div className="p-4 border-b border-gray-100 bg-gradient-to-r from-blue-50 to-cyan-50">

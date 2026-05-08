@@ -2,13 +2,11 @@
 
 import { useState, useCallback, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { useSyncExternalStore } from "react";
 import {
   FileText,
   Save,
   Copy,
   Download,
-  AlertCircle,
   CheckCircle,
   ListChecks,
   Bold,
@@ -126,23 +124,14 @@ interface SOPSection {
 }
 
 export default function SOPHelper() {
-  const [sections, setSections] = useState<SOPSection[]>(
-    SOP_SECTIONS.map((s) => ({ id: s.id, content: "", wordCount: 0 }))
-  );
+  const [sections, setSections] = useState<SOPSection[]>(() => {
+    const saved = loadSections();
+    return saved || SOP_SECTIONS.map((s) => ({ id: s.id, content: "", wordCount: 0 }));
+  });
   const [activeSection, setActiveSection] = useState(0);
   const [showSaveMessage, setShowSaveMessage] = useState(false);
-  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
-    const saved = loadSections();
-    if (saved) {
-      setSections(saved);
-    }
-    setIsLoaded(true);
-  }, []);
-
-  useEffect(() => {
-    if (!isLoaded) return;
     const saveTimer = setTimeout(() => {
       localStorage.setItem("sop-sections", JSON.stringify(sections));
       setShowSaveMessage(true);
@@ -154,7 +143,7 @@ export default function SOPHelper() {
       clearTimeout(saveTimer);
       clearTimeout(hideTimer);
     };
-  }, [sections, isLoaded]);
+  }, [sections]);
 
   const updateSectionContent = useCallback((content: string) => {
     const words = content.trim().split(/\s+/).filter((w) => w.length > 0);
@@ -225,7 +214,7 @@ export default function SOPHelper() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50/50 pt-20 pb-12">
+    <div className="min-h-screen bg-gray-50/50 pt-32 pb-12">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 16 }}

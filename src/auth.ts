@@ -28,7 +28,6 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       async authorize(credentials) {
         if (!credentials?.email) return null;
 
-        const action = credentials.action as string;
         const name = (credentials.name as string) || credentials.email.split("@")[0];
 
         return {

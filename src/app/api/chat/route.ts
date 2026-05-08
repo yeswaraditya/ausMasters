@@ -28,7 +28,7 @@ Current stages to track: greeting -> student-level -> course-selection -> englis
 
 export async function POST(request: NextRequest) {
   try {
-    const { messages, stage, userProfile } = await request.json();
+    const { messages, stage } = await request.json();
 
     if (!process.env.OPENAI_API_KEY) {
       return NextResponse.json(

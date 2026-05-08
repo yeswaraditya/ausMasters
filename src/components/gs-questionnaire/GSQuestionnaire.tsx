@@ -50,17 +50,11 @@ function loadAnswers(): GSAnswer[] | null {
 export default function GSQuestionnaire() {
   const questions = getQuestions();
   const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [answers, setAnswers] = useState<GSAnswer[]>(initializeAnswers(questions));
-  const [isLoaded, setIsLoaded] = useState(false);
-  const [showSaveMessage, setShowSaveMessage] = useState(false);
-
-  useEffect(() => {
+  const [answers, setAnswers] = useState<GSAnswer[]>(() => {
     const saved = loadAnswers();
-    if (saved) {
-      setAnswers(saved);
-    }
-    setIsLoaded(true);
-  }, []);
+    return saved || initializeAnswers(questions);
+  });
+  const [showSaveMessage, setShowSaveMessage] = useState(false);
 
   const updateAnswer = (value: string) => {
     setAnswers((prev) =>
@@ -73,7 +67,6 @@ export default function GSQuestionnaire() {
   };
 
   useEffect(() => {
-    if (!isLoaded) return;
     const saveTimer = setTimeout(() => {
       localStorage.setItem("gs-answers", JSON.stringify(answers));
       setShowSaveMessage(true);
@@ -85,7 +78,7 @@ export default function GSQuestionnaire() {
       clearTimeout(saveTimer);
       clearTimeout(hideTimer);
     };
-  }, [answers, isLoaded]);
+  }, [answers]);
 
   const getCounterColor = (count: number) => {
     if (count >= MAX_CHARACTERS) return "text-red-500";
@@ -151,7 +144,7 @@ export default function GSQuestionnaire() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-50/50 pt-20 pb-12">
+    <div className="min-h-screen bg-gray-50/50 pt-32 pb-12">
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 16 }}
