@@ -4,7 +4,7 @@ import { useState, useRef, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
-import { Menu, X, FileText, PenTool, CheckSquare, GraduationCap, Users, MessageSquare, ChevronDown, BarChart2, Plane, Calculator } from "lucide-react";
+import { Menu, X, FileText, PenTool, CheckSquare, GraduationCap, Users, MessageSquare, ChevronDown, BarChart2, Plane, Calculator, Globe } from "lucide-react";
 
 const navLinks = [
   {
@@ -26,6 +26,7 @@ const navLinks = [
     icon: GraduationCap,
     children: [
       { href: "/university-priorities", label: "University Priorities", icon: GraduationCap },
+      { href: "/country-compare", label: "Country Comparison", icon: Globe },
       { href: "/communities", label: "Communities", icon: Users },
     ],
   },
@@ -57,14 +58,14 @@ export default function Navbar() {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-[100] bg-white/95 backdrop-blur-md border-b border-gray-100 shadow-sm">
-      <div className="flex items-center h-14 lg:h-16 px-4 lg:px-8">
-        <Link href="/" className="flex items-center flex-shrink-0 mr-4 lg:mr-8" onClick={handleLinkClick}>
+      <div className="flex items-center justify-between h-14 lg:h-16 px-4 lg:px-8">
+        <Link href="/" className="flex items-center flex-shrink-0" onClick={handleLinkClick}>
           <span className="text-lg font-bold tracking-tight text-gray-900 whitespace-nowrap">
             aus<span className="text-blue-600">Masters</span>
           </span>
         </Link>
 
-        <nav className="hidden md:flex flex-row items-center gap-1 flex-1 min-w-0">
+        <nav className="hidden md:flex flex-row items-center gap-1 flex-shrink-0">
           {navLinks.map((link) => {
             if ("type" in link && link.type === "dropdown") {
               const Icon = link.icon;
